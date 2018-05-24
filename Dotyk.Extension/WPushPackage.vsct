@@ -15,10 +15,10 @@
         defining some of the constants that we will use inside the file. -->
 
   <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
-  <Extern href="stdidcmd.h"/>
+  <Extern href="stdidcmd.h" />
 
   <!--This header contains the command ids for the menus provided by the shell. -->
-  <Extern href="vsshlids.h"/>
+  <Extern href="vsshlids.h" />
 
   <!--The Commands section is where commands, menus, and menu groups are defined.
       This section uses a Guid to identify the package that provides the command defined inside it. -->
@@ -41,9 +41,15 @@
     </Menus>
 
     <Groups>
+   
+      <Group guid="guidWPushPackageCmdSet1" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="guidWPushPackageCmdSet" id="MenuId" />
+      </Group>
+      
       <Group guid="guidWPushPackageCmdSet" id="GroupId" priority="0x0600">
         <Parent guid="guidWPushPackageCmdSet" id="MenuId" />
       </Group>
+    
     </Groups>
     <!--Buttons section. -->
     <!--This section defines the elements the user can interact with, like a menu command or a button
@@ -56,15 +62,56 @@
               <CommandFlag>DefaultInvisible</CommandFlag>
               <CommandFlag>DynamicVisibility</CommandFlag>
           If you do not want an image next to your command, remove the Icon node /> -->
-      <Button guid="guidWPushPackageCmdSet" id="WPushCommandId" priority="0x0100" type="Button">
-        <Parent guid="guidWPushPackageCmdSet" id="GroupId"/>
+      <!--<ButtonText>Deploy</ButtonText>-->
+
+      <!--<Button guid="guidWPushPackageCmdSet" id="WPushCmdId" priority="0x0100" type="Button">
+        <Parent guid="guidWPushPackageCmdSet" id="GroupId" />
         <Icon guid="guidImages" id="bmpPic1" />
         <Strings>
           <ButtonText>Push</ButtonText>
         </Strings>
+      </Button>-->
+
+      <Button guid="guidWPushPackageCmdSet1" id="cmdidCDeploy" priority="0x0100" type="Button">
+        <Parent guid="guidWPushPackageCmdSet1" id="MyMenuGroup" />
+        <Icon guid="guidImages4" id="bmpPic1" />
+        <Strings>
+          <ButtonText>Deploy</ButtonText>
+        </Strings>
+      </Button>
+      
+      <Button guid="guidWPushPackageCmdSet1" id="cmdidCPack" priority="0x0100" type="Button">
+        <Parent guid="guidWPushPackageCmdSet1" id="MyMenuGroup" />
+        <Icon guid="guidImages3" id="bmpPic1" />
+        <Strings>
+          <ButtonText>Pack</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidWPushPackageCmdSet1" id="cmdidCPush" priority="0x0100" type="Button">
+        <Parent guid="guidWPushPackageCmdSet1" id="MyMenuGroup" />
+        <Icon guid="guidImages2" id="bmpPic1" />
+        <Strings>
+          <ButtonText>Push</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidWPushPackageCmdSet" id="WDotykCmdId" priority="0x0100" type="Button">
+        <Parent guid="guidWPushPackageCmdSet" id="GroupId" />
+        <Icon guid="guidImages1" id="bmpPic1" />
+        <Strings>
+          <ButtonText>Dotyk Properties</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidWPushPackageCmdSet" id="cmdidWOutputsCommand" priority="0x0100" type="Button">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1" />
+        <Icon guid="guidImages5" id="bmpPic1" />
+        <Strings>
+          <ButtonText>WOutputs</ButtonText>
+        </Strings>
       </Button>
     </Buttons>
-
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
     <Bitmaps>
       <!--  The bitmap id is defined in a way that is a little bit different from the others:
@@ -72,7 +119,12 @@
             bitmap strip containing the bitmaps and then there are the numeric ids of the elements used
             inside a button definition. An important aspect of this declaration is that the element id
             must be the actual index (1-based) of the bitmap inside the bitmap strip. -->
-      <Bitmap guid="guidImages" href="Resources\WPushCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough"/>
+      <Bitmap guid="guidImages" href="Resources\WPushCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
+      <Bitmap guid="guidImages1" href="Windows\Resources\WDotykCmdCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
+      <Bitmap guid="guidImages2" href="Windows\Resources\CPush.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
+      <Bitmap guid="guidImages3" href="Resources\CPack.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
+      <Bitmap guid="guidImages4" href="Resources\CDeploy.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
+      <Bitmap guid="guidImages5" href="Windows\Resources\WOutputsCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
     </Bitmaps>
   </Commands>
 
@@ -84,10 +136,64 @@
     <GuidSymbol name="guidWPushPackageCmdSet" value="{01732301-0a80-4a99-b1f9-0700410a9879}">
       <IDSymbol name="MenuId" value="0x1021" />
       <IDSymbol name="GroupId" value="0x1022" />
-      <IDSymbol name="WPushCommandId" value="0x0100" />
+      <IDSymbol name="WPushCmdId" value="0x0100" />
+      <IDSymbol name="WDotykCmdId" value="4131" />
+      <IDSymbol value="4132" name="cmdidWOutputsCommand" />
     </GuidSymbol>
 
-    <GuidSymbol name="guidImages" value="{e60723cd-33b5-4897-8b59-d2bcc6290ec6}" >
+    <GuidSymbol name="guidImages" value="{e60723cd-33b5-4897-8b59-d2bcc6290ec6}">
+      <IDSymbol name="bmpPic1" value="1" />
+      <IDSymbol name="bmpPic2" value="2" />
+      <IDSymbol name="bmpPicSearch" value="3" />
+      <IDSymbol name="bmpPicX" value="4" />
+      <IDSymbol name="bmpPicArrows" value="5" />
+      <IDSymbol name="bmpPicStrikethrough" value="6" />
+    </GuidSymbol>
+  
+    <GuidSymbol value="{a540f761-4fe0-4b76-b094-538edd4cc59a}" name="guidImages1">
+      <IDSymbol name="bmpPic1" value="1" />
+      <IDSymbol name="bmpPic2" value="2" />
+      <IDSymbol name="bmpPicSearch" value="3" />
+      <IDSymbol name="bmpPicX" value="4" />
+      <IDSymbol name="bmpPicArrows" value="5" />
+      <IDSymbol name="bmpPicStrikethrough" value="6" />
+    </GuidSymbol>
+  
+    <GuidSymbol value="{050bba8e-f798-42ab-b562-dea1f1bf3e45}" name="guidWPushPackageCmdSet1">
+      <IDSymbol value="4128" name="MyMenuGroup" />
+      <IDSymbol value="255" name="cmdidCDeploy" />
+      <IDSymbol value="256" name="cmdidCPack" />
+      <IDSymbol value="257" name="cmdidCPush" />
+    </GuidSymbol>
+  
+    <GuidSymbol value="{6135944e-375c-46d4-be55-997f5b8670c7}" name="guidImages2">
+      <IDSymbol name="bmpPic1" value="1" />
+      <IDSymbol name="bmpPic2" value="2" />
+      <IDSymbol name="bmpPicSearch" value="3" />
+      <IDSymbol name="bmpPicX" value="4" />
+      <IDSymbol name="bmpPicArrows" value="5" />
+      <IDSymbol name="bmpPicStrikethrough" value="6" />
+    </GuidSymbol>
+  
+    <GuidSymbol value="{83c3d7de-02cd-48d2-b197-a489b2b0d44d}" name="guidImages3">
+      <IDSymbol name="bmpPic1" value="1" />
+      <IDSymbol name="bmpPic2" value="2" />
+      <IDSymbol name="bmpPicSearch" value="3" />
+      <IDSymbol name="bmpPicX" value="4" />
+      <IDSymbol name="bmpPicArrows" value="5" />
+      <IDSymbol name="bmpPicStrikethrough" value="6" />
+    </GuidSymbol>
+  
+    <GuidSymbol value="{8020d397-c4db-444c-b95c-d6b5d6e16f18}" name="guidImages4">
+      <IDSymbol name="bmpPic1" value="1" />
+      <IDSymbol name="bmpPic2" value="2" />
+      <IDSymbol name="bmpPicSearch" value="3" />
+      <IDSymbol name="bmpPicX" value="4" />
+      <IDSymbol name="bmpPicArrows" value="5" />
+      <IDSymbol name="bmpPicStrikethrough" value="6" />
+    </GuidSymbol>
+  
+    <GuidSymbol value="{15102128-2ffe-4988-93b5-57e5490e4437}" name="guidImages5">
       <IDSymbol name="bmpPic1" value="1" />
       <IDSymbol name="bmpPic2" value="2" />
       <IDSymbol name="bmpPicSearch" value="3" />

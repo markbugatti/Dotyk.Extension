@@ -3,26 +3,29 @@ using System.ComponentModel.Design;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using EnvDTE;
+using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
+using MessageBox = System.Windows.Forms.MessageBox;
 
-namespace Dotyk.Extension
+namespace Dotyk.Extension.Commands
 {
     /// <summary>
     /// Command handler
     /// </summary>
-    internal sealed class WPushCommand
+    internal sealed class CDeploy
     {
         /// <summary>
         /// Command ID.
         /// </summary>
-        public const int CommandId = 0x0100;
+        public const int CommandId = 255;
 
         /// <summary>
         /// Command menu group (command set GUID).
         /// </summary>
-        public static readonly Guid CommandSet = new Guid("01732301-0a80-4a99-b1f9-0700410a9879");
+        public static readonly Guid CommandSet = new Guid("050bba8e-f798-42ab-b562-dea1f1bf3e45");
 
         /// <summary>
         /// VS Package that provides this command, not null.
@@ -30,12 +33,12 @@ namespace Dotyk.Extension
         private readonly AsyncPackage package;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WPushCommand"/> class.
+        /// Initializes a new instance of the <see cref="CDeploy"/> class.
         /// Adds our command handlers for menu (commands must exist in the command table file)
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
         /// <param name="commandService">Command service to add command to, not null.</param>
-        private WPushCommand(AsyncPackage package, OleMenuCommandService commandService)
+        private CDeploy(AsyncPackage package, OleMenuCommandService commandService)
         {
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
@@ -48,7 +51,7 @@ namespace Dotyk.Extension
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static WPushCommand Instance
+        public static CDeploy Instance
         {
             get;
             private set;
@@ -71,34 +74,40 @@ namespace Dotyk.Extension
         /// <param name="package">Owner package, not null.</param>
         public static async Task InitializeAsync(AsyncPackage package)
         {
-            // Verify the current thread is the UI thread - the call to AddCommand in WPushCommand's constructor requires
+            // Verify the current thread is the UI thread - the call to AddCommand in CDeploy's constructor requires
             // the UI thread.
             ThreadHelper.ThrowIfNotOnUIThread();
 
             OleMenuCommandService commandService = await package.GetServiceAsync((typeof(IMenuCommandService))) as OleMenuCommandService;
-            Instance = new WPushCommand(package, commandService);
+            Instance = new CDeploy(package, commandService);
         }
 
         /// <summary>
-        /// Shows the tool window when the menu item is clicked.
+        /// This function is the callback used to execute the command when the menu item is clicked.
+        /// See the constructor to see how the menu item is associated with this function using
+        /// OleMenuCommandService service and MenuCommand class.
         /// </summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event args.</param>
-        private void Execute(object sender, EventArgs e)
+        /// <param name="sender">Event sender.</param>
+        /// <param name="e">Event args.</param>
+        private async void Execute(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            // Get the instance number 0 of this tool window. This window is single instance so this instance
-            // is actually the only one.
-            // The last flag is set to true so that if the tool window does not exists it will be created.
-            ToolWindowPane window = this.package.FindToolWindow(typeof(WPush), 0, true);
-            if ((null == window) || (null == window.Frame))
-            {
-                throw new NotSupportedException("Cannot create tool window");
-            }
+            DTE2 dte = await this.ServiceProvider.GetServiceAsync(typeof(DTE)) as DTE2;
+            EnvDTE.Project project = null;
 
-            IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
-            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
+            var targetProjName = dte.Solution.Properties.Item("StartupProject").Value.ToString();
+            project = CFuncs.GetCurrentProject(dte.Solution.Projects, targetProjName);
+            Configuration conf = project.ConfigurationManager.ActiveConfiguration;
+
+            try
+            {
+                await System.Threading.Tasks.Task.Run(() => CFuncs.Deploy(dte, project, conf));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("error: " + ex.Message);
+            }
         }
     }
 }

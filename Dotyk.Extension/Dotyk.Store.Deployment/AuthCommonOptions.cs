@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CommandLine;
-using Dotyk.Store.Model;
+//using Dotyk.Store.Model;
 using Microsoft.Extensions.Logging;
 
 namespace Dotyk.Store.Cli

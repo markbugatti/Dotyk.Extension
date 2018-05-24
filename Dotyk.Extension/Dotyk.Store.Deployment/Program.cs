@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using CommandLine;
-using CommandLine.Text;
 
 namespace Dotyk.Store.Cli
 {
@@ -21,7 +19,7 @@ namespace Dotyk.Store.Cli
 
         static void DefineAndExecute(CommonOptions commonOptions)
         {
-            commonOptions.Execute().Wait();
+            commonOptions.ExecuteAsync().Wait();
         }
     }
 }

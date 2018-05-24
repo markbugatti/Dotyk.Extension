@@ -12,6 +12,8 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
 using Task = System.Threading.Tasks.Task;
+using Dotyk.Extension.Commands;
+using System.Reflection;
 
 namespace Dotyk.Extension
 {
@@ -38,6 +40,7 @@ namespace Dotyk.Extension
     [ProvideToolWindow(typeof(WPush))]
     [Guid(WPushPackage.PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
+    [ProvideToolWindow(typeof(WDotykCmd))]
     public sealed class WPushPackage : AsyncPackage
     {
         /// <summary>
@@ -70,7 +73,12 @@ namespace Dotyk.Extension
             // When initialized asynchronously, the current thread may be a background thread at this point.
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-            await WPushCommand.InitializeAsync(this);
+            //await WPushCommand.InitializeAsync(this);
+            await OutputsWindow.InitializeAsync(this);
+            await WDotykCmdCommand.InitializeAsync(this);
+            await CPush.InitializeAsync(this);
+            await CPack.InitializeAsync(this);
+            await CDeploy.InitializeAsync(this);
         }
 
         #endregion

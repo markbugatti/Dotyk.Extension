@@ -1,0 +1,98 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
+             xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="Dotyk.Extension.WDotykCmdControl"
+             Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
+             Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
+             mc:Ignorable="d"
+             x:Name="MyToolWindow">
+
+    <TabControl x:Name="DotykTabs" TabStripPlacement="Left">
+        <TabItem Header="Deploy" Height="30" Width="100">
+
+        </TabItem>
+        <TabItem Header="Pack" Height="30" VerticalAlignment="Top">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,5">
+                        <Label Content="Configuration" HorizontalAlignment="Center" VerticalAlignment="Top" Width="100" Height="22" Padding="5,0" VerticalContentAlignment="Center" Margin="0,0,10,0"/>
+                        <ComboBox x:Name="PackConf" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Height="22" SelectedIndex="0">
+                            <System:String>Debug</System:String>
+                            <System:String>Release</System:String>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,5">
+                        <Label Content="Verbosity" HorizontalAlignment="Center" VerticalAlignment="Top" Width="100" Height="22" Padding="5,0" VerticalContentAlignment="Center" Margin="0,0,10,0"/>
+                        <ComboBox x:Name="PackVerb" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" SelectedIndex="2" Height="22">
+                            <System:String>Trace</System:String>
+                            <System:String>Debug</System:String>
+                            <System:String>Information</System:String>
+                            <System:String>Warning</System:String>
+                            <System:String>Error</System:String>
+                            <System:String>Critical</System:String>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,5">
+                        <Label Content="Project path" HorizontalAlignment="Center" VerticalAlignment="Top" Height="22" Padding="5,0" VerticalContentAlignment="Center" Margin="0,0,10,0" Width="100"/>
+                        <TextBox x:Name="PackProj" HorizontalAlignment="Center" Height="22" VerticalAlignment="Top" Width="120" VerticalContentAlignment="Center" Margin="0,0,10,0"/>
+                        <Button x:Name="PackProjPathBtn" Content="Select" Width="100" Click="Button_Click"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,5">
+                        <Label Content="Output path" HorizontalAlignment="Center" VerticalAlignment="Top" Height="22" Padding="5,0" VerticalContentAlignment="Center" Margin="0,0,10,0" Width="100"/>
+                        <TextBox x:Name="PackOutp" HorizontalAlignment="Center" Height="22" VerticalAlignment="Top" Width="120" VerticalContentAlignment="Center" Margin="0,0,10,0"/>
+                        <Button x:Name="PackOutpPathBtn" Content="Select" Width="100" Click="PackOutpPathBtn_Click"/>
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,5">
+                        <Label Content="Package Name" HorizontalAlignment="Center" VerticalAlignment="Top" Height="22" Padding="5,0" VerticalContentAlignment="Center" Margin="0,0,10,0" Width="100"/>
+                        <TextBox x:Name="PackFileName" HorizontalAlignment="Center" Height="22" VerticalAlignment="Top" Width="120" VerticalContentAlignment="Center" Margin="0,0,10,0"/>
+                    </StackPanel>
+                    
+                    <Button x:Name ="PackBtn" Content="Pack" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" Height="22" Click="PackBtn_Click"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Push" Height="30">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,5">
+                        <Label Content="AuthToken" Width="100" HorizontalAlignment="Center" VerticalContentAlignment="Center" Padding="5,0" Height="22" VerticalAlignment="Top" Margin="0,0,10,0"/>
+                        <TextBox x:Name="PushToken" HorizontalAlignment="Center" Height="22" VerticalAlignment="Top" Width="120" VerticalContentAlignment="Center"/>
+                    </StackPanel>
+                    <!--<CheckBox x:Name="PushRegist" Content="Register if not exist" HorizontalAlignment="Center"  VerticalAlignment="Top" IsChecked="True" Margin="0,0,10,5" />-->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,5">
+                        <Label Content="Package path" Width="100" HorizontalAlignment="Center" Height="22" Padding="5,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Margin="0,0,10,0"/>
+                        <TextBox x:Name="PushPackage" HorizontalAlignment="Center" Height="22" VerticalAlignment="Top" Width="120" Margin="0,0,10,0"/>
+                        <Button x:Name="PushPackgPathBtn" Content="Select" Width="100" Click="Button_Click"/>
+                    </StackPanel>
+                    <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,10,5">
+                        <Label Content="Configuration" Width="100" HorizontalAlignment="Center" VerticalAlignment="Top" Height="22" Padding="5,0" VerticalContentAlignment="Center" Margin="0,0,10,0"/>
+                        <ComboBox x:Name="PushConf" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120"/>
+                    </StackPanel>-->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,10,5">
+                        <Label Content="Verbosity" Width="100" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="22" Padding="5,0" VerticalContentAlignment="Center" Margin="0,0,10,0"/>
+                        <ComboBox x:Name="PushVerb" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" SelectedIndex="2">
+                            <System:String>Trace</System:String>
+                            <System:String>Debug</System:String>
+                            <System:String>Information</System:String>
+                            <System:String>Warning</System:String>
+                            <System:String>Error</System:String>
+                            <System:String>Critical</System:String>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,10,5">
+                        <Label Content="Server" Width="100" HorizontalAlignment="Center" VerticalAlignment="Top" Height="22" Padding="5,0" VerticalContentAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBox x:Name="PushServer" HorizontalAlignment="Center" Height="22" VerticalAlignment="Top" Width="120" Text="https://dotyk.store/" VerticalContentAlignment="Center"/>
+                    </StackPanel>
+                    <Button x:Name="PushBtn" Content="Push" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" Height="22"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</UserControl>

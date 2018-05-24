@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using CommandLine;
 using Microsoft.Extensions.Logging;
 using Dotyk.Extension.Logging.Outputs;
 using Dotyk.Extension.Logging.Outputs.Internal;
@@ -14,7 +13,7 @@ namespace Dotyk.Store.Cli
 
         public LogLevel LogVerbosity { get; set; }
 
-        public Task Execute()
+        public Task ExecuteAsync()
         {
             var logger = new OutputsLogger("Publisher", (m, l) => l >= LogVerbosity, true);
 
@@ -29,9 +28,9 @@ namespace Dotyk.Store.Cli
 
             processor?.Dispose();
 
-            return ExecuteOverride(logger);
+            return ExecuteOverrideAsync(logger);
         }
 
-        protected abstract Task ExecuteOverride(ILogger logger);
+        protected abstract Task ExecuteOverrideAsync(ILogger logger);
     }
 }

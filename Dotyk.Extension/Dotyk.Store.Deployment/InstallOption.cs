@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CommandLine;
 using Dotyk.Store.Deployment;
 using Dotyk.Store.Deployment.Installer;
 using Microsoft.Extensions.Logging;
@@ -11,7 +10,7 @@ namespace Dotyk.Store.Cli
     {
         public string PackagePath { get; set; }
 
-        protected override async Task ExecuteOverride(ILogger logger)
+        protected override async Task ExecuteOverrideAsync(ILogger logger)
         {
             using (logger.BeginScope("ExecuteInstall"))
             {

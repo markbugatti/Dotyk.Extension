@@ -1,11 +1,18 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using CommandLine;
-using Dotyk.Store.Model;
+//using Dotyk.Store.Model;
 using Microsoft.Extensions.Logging;
 
 namespace Dotyk.Store.Cli
 {
+    public enum PackageFeed
+    {
+        Default = 0,
+        Release = 1,
+        Staging = 2,
+        Test = 3
+    }
+
     public class PackagePushOption : AuthCommonOptions
     {
         public string Project { get; set; }
@@ -14,7 +21,7 @@ namespace Dotyk.Store.Cli
         public string Configuration { get; set; } = "Release";
         public PackageFeed Feed { get; set; }
 
-        protected override async Task ExecuteOverride(ILogger logger)
+        protected override async Task ExecuteOverrideAsync(ILogger logger)
         {
             var packager = Utils.PreparePackager(Configuration, logger);
 
@@ -23,7 +30,7 @@ namespace Dotyk.Store.Cli
                     Solution ?? Utils.ResolveSolutionPath(Project),
                     default(CancellationToken)))
             {
-                await Utils.PushPackage(new PushOption
+                await Utils.PushPackageAsync(new PushOption
                 {
                     Login = Login,
                     Password = Password,
